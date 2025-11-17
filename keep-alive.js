@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
 const https = require('https');
 const http = require('http');
 
-// Read configuration from environment variable or config file
+// Read configuration from environment variable
 function getConfig() {
-  // Try to read from environment variable first (for GitHub Actions)
   if (process.env.SUPABASE_PROJECTS) {
     try {
       return JSON.parse(process.env.SUPABASE_PROJECTS);
@@ -16,14 +14,8 @@ function getConfig() {
     }
   }
 
-  // Fall back to config.json for local testing
-  try {
-    return JSON.parse(fs.readFileSync('config.json', 'utf8'));
-  } catch (error) {
-    console.error('Error reading config.json:', error.message);
-    console.error('Please set SUPABASE_PROJECTS environment variable or create config.json');
-    process.exit(1);
-  }
+  console.error('Missing SUPABASE_PROJECTS environment variable. Set it in GitHub Secrets or export it locally before running the keep-alive script.');
+  process.exit(1);
 }
 
 const config = getConfig();

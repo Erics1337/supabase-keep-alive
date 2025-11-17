@@ -107,32 +107,20 @@ Supabase Keep-Alive Script
 
 ## Local Testing
 
-You can test the script locally before deploying:
-
-### Option 1: Using config.json (Recommended for local testing)
-
-1. Copy the example config:
-   ```bash
-   cp config.example.json config.json
-   ```
-
-2. Edit `config.json` with your project details
-
-3. Run the script:
-   ```bash
-   node keep-alive.js
-   # Or using npm
-   npm start
-   ```
-
-**Note:** `config.json` is gitignored and won't be committed to your repository.
-
-### Option 2: Using environment variable
+You can test the script locally before deploying. Since the workflow only reads from the `SUPABASE_PROJECTS` environment variable, simply export it locally and run the script:
 
 ```bash
 export SUPABASE_PROJECTS='{"projects":[{"name":"My Project","url":"https://your-project-id.supabase.co","endpoint":"/rest/v1/"}]}'
 node keep-alive.js
+# Or using npm
+npm start
 ```
+
+> 💡 **Tip:** Store the JSON in a `.env` file or your shell profile if you test frequently:
+> ```
+> SUPABASE_PROJECTS='{"projects":[...]}'
+> ```
+> Then run `source .env` before executing the script.
 
 ## Troubleshooting
 
