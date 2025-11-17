@@ -1,0 +1,14 @@
+{
+  "projects": [
+    {
+      "name": "Project 1",
+      "url": "https://your-project-id.supabase.co",
+      "endpoint": "/rest/v1/"
+    },
+    {
+      "name": "Project 2",
+      "url": "https://another-project-id.supabase.co",
+      "endpoint": "/rest/v1/"
+    }
+  ]
+}
