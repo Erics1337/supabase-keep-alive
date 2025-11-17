@@ -4,8 +4,29 @@ const fs = require('fs');
 const https = require('https');
 const http = require('http');
 
-// Read configuration
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+// Read configuration from environment variable or config file
+function getConfig() {
+  // Try to read from environment variable first (for GitHub Actions)
+  if (process.env.SUPABASE_PROJECTS) {
+    try {
+      return JSON.parse(process.env.SUPABASE_PROJECTS);
+    } catch (error) {
+      console.error('Error parsing SUPABASE_PROJECTS environment variable:', error.message);
+      process.exit(1);
+    }
+  }
+
+  // Fall back to config.json for local testing
+  try {
+    return JSON.parse(fs.readFileSync('config.json', 'utf8'));
+  } catch (error) {
+    console.error('Error reading config.json:', error.message);
+    console.error('Please set SUPABASE_PROJECTS environment variable or create config.json');
+    process.exit(1);
+  }
+}
+
+const config = getConfig();
 
 // Function to ping a single project
 function pingProject(project) {

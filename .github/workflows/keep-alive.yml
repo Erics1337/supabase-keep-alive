@@ -23,6 +23,8 @@ jobs:
           node-version: '18'
 
       - name: Run keep-alive script
+        env:
+          SUPABASE_PROJECTS: ${{ secrets.SUPABASE_PROJECTS }}
         run: node keep-alive.js
 
       - name: Log completion
