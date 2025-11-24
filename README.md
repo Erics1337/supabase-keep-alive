@@ -38,11 +38,13 @@ Your Supabase project URLs will be stored securely as a GitHub Secret:
     {
       "name": "My Project",
       "url": "https://your-project-id.supabase.co",
+      "apikey": "your-service-role-key",
       "endpoint": "/rest/v1/"
     },
     {
       "name": "Another Project",
       "url": "https://another-project-id.supabase.co",
+      "apikey": "your-service-role-key",
       "endpoint": "/rest/v1/"
     }
   ]
@@ -110,7 +112,7 @@ Supabase Keep-Alive Script
 You can test the script locally before deploying. Since the workflow only reads from the `SUPABASE_PROJECTS` environment variable, simply export it locally and run the script:
 
 ```bash
-export SUPABASE_PROJECTS='{"projects":[{"name":"My Project","url":"https://your-project-id.supabase.co","endpoint":"/rest/v1/"}]}'
+export SUPABASE_PROJECTS='{"projects":[{"name":"My Project","url":"https://your-project-id.supabase.co","apikey":"your-key","endpoint":"/rest/v1/"}]}'
 node keep-alive.js
 # Or using npm
 npm start
@@ -160,16 +162,19 @@ You can ping different endpoints for each project in your GitHub Secret:
     {
       "name": "My Project",
       "url": "https://your-project-id.supabase.co",
+      "apikey": "your-key",
       "endpoint": "/rest/v1/"
     },
     {
       "name": "Another Project with Auth",
       "url": "https://another-project-id.supabase.co",
+      "apikey": "your-key",
       "endpoint": "/auth/v1/health"
     },
     {
       "name": "Storage Project",
       "url": "https://third-project.supabase.co",
+      "apikey": "your-key",
       "endpoint": "/storage/v1/healthcheck"
     }
   ]

@@ -23,19 +23,35 @@ const config = getConfig();
 // Function to ping a single project
 function pingProject(project) {
   return new Promise((resolve, reject) => {
-    const url = new URL(project.endpoint, project.url);
+    // Default to /rest/v1/ if no endpoint is specified, which is the PostgREST root
+    const endpoint = project.endpoint || '/rest/v1/';
+    const url = new URL(endpoint, project.url);
     const protocol = url.protocol === 'https:' ? https : http;
 
+    if (!project.apikey) {
+      console.error(`[${new Date().toISOString()}] ✗ ${project.name} - Error: Missing apikey in configuration`);
+      resolve({ project: project.name, error: 'Missing apikey', success: false });
+      return;
+    }
+
     const options = {
-      method: 'HEAD',
-      timeout: 10000
+      method: 'GET',
+      timeout: 10000,
+      headers: {
+        'apikey': project.apikey,
+        'Authorization': `Bearer ${project.apikey}`
+      }
     };
 
     console.log(`[${new Date().toISOString()}] Pinging ${project.name} (${url.href})...`);
 
     const req = protocol.request(url, options, (res) => {
       console.log(`[${new Date().toISOString()}] ✓ ${project.name} - Status: ${res.statusCode}`);
-      resolve({ project: project.name, status: res.statusCode, success: true });
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        resolve({ project: project.name, status: res.statusCode, success: true });
+      } else {
+        resolve({ project: project.name, status: res.statusCode, error: `HTTP ${res.statusCode}`, success: false });
+      }
     });
 
     req.on('error', (error) => {
